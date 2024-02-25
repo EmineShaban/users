@@ -8,24 +8,26 @@ import { Users } from './components/Users';
 function App() {
   const [users, setUsers] = React.useState([]);
   const [isLoading, setLoading] = React.useState(true);
+  const [searchValue, setSearchValue] = React.useState("");
 
   React.useEffect(() => {
     fetch('https://reqres.in/api/users')
-    .then((res) => res.json())
-    .then((json) =>{
-      setUsers(json.data)
-    }).catch(err => {
-      console.warn(err)
-      alert("error")
-    }).finally(() => setLoading(false))
+      .then((res) => res.json())
+      .then((json) => {
+        setUsers(json.data)
+      }).catch(err => {
+        console.warn(err)
+        alert("error")
+      }).finally(() => setLoading(false))
+  }, []);
+
+  const onChangeSearchValue = (event) =>{
+    setSearchValue(event.target.value)
   }
 
-  )
-
-  
   return (
     <div className="App">
-      <Users items={users}/>
+      <Users searchValue={searchValue} onChangeSearchValue={onChangeSearchValue} items={users} isLoading={isLoading} />
       {/* <Success /> */}
     </div>
   );
