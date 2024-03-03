@@ -8,8 +8,8 @@ import { Users } from './components/Users';
 function App() {
   const [users, setUsers] = React.useState([]);
   const [invites, setInvites] = React.useState([]);
-
-  const [isLoading, setLoading] = React.useState(true);
+  const [success, setSuccess] = React.useState(false);
+  const [isLoading, setLoading] = React.useState(false);
   const [searchValue, setSearchValue] = React.useState("");
 
   React.useEffect(() => {
@@ -23,14 +23,29 @@ function App() {
       }).finally(() => setLoading(false))
   }, []);
 
-  const onChangeSearchValue = (event) =>{
+  const onChangeSearchValue = (event) => {
     setSearchValue(event.target.value)
+  }
+
+  const onClickInvite = (id) => {
+    if (invites.includes(id)) {
+      setInvites(prev => prev.filter(_id => _id !==  id))
+    } else {
+      setInvites(prev => [...prev, id])
+    }
+  }
+
+  const onClickSendInvites = () =>{
+    setSuccess(true)
   }
 
   return (
     <div className="App">
-      <Users searchValue={searchValue} onChangeSearchValue={onChangeSearchValue} items={users} isLoading={isLoading} />
-      {/* <Success /> */}
+
+      {
+        success ? (<Success count={invites.length} />) : (<Users invites={invites} onClickInvite={onClickInvite} searchValue={searchValue} 
+          onChangeSearchValue={onChangeSearchValue} items={users} isLoading={isLoading} onClickSendInvites={onClickSendInvites}/>)
+      }  
     </div>
   );
 }
