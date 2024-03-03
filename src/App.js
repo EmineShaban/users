@@ -7,6 +7,8 @@ import { Users } from './components/Users';
 
 function App() {
   const [users, setUsers] = React.useState([]);
+  const [invites, setInvites] = React.useState([]);
+
   const [isLoading, setLoading] = React.useState(true);
   const [searchValue, setSearchValue] = React.useState("");
 
